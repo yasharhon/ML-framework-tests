@@ -7,7 +7,7 @@ import tensorflow.keras.datasets as dts
 
 # Define neural network
 class SimpleNN(nnx.Module):
-  def __init__(self, n_features: int = 64, n_hidden: int = 100, n_targets: int = 10,
+  def __init__(self, n_features: int = 28*28, n_hidden: int = 100, n_targets: int = 10,
                *, rngs: nnx.Rngs):
     self.n_features = n_features
     self.layer1 = nnx.Linear(n_features, n_hidden, rngs=rngs)
@@ -56,3 +56,8 @@ model = SimpleNN(rngs=nnx.Rngs(0))
 
 # Create optimizer
 optimizer = nnx.Optimizer(model, optax.sgd(learning_rate=0.05))
+
+for i in range(5):
+    train_step(model, optimizer, x_train, y_train)
+    loss, _ = loss_fun(model, x_test, y_test)
+    print("Epoch {0}: Loss {1}".format(i, loss))
